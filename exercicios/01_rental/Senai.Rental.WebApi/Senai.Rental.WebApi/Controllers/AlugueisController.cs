@@ -33,6 +33,19 @@ namespace Senai.Rental.WebApi.Controllers
 
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            AluguelDomain aluguelBuscado = _aluguelRepository.BuscarPorId(id);
+
+            if (aluguelBuscado == null)
+            {
+                return NotFound("Nenhum aluguel encontrado");
+            }
+
+            return Ok(aluguelBuscado);
+        }
+
         [HttpPost]
         public IActionResult Post(AluguelDomain novoAluguel)
         {
@@ -40,6 +53,42 @@ namespace Senai.Rental.WebApi.Controllers
             _aluguelRepository.Cadastrar(novoAluguel);
 
             return StatusCode(201);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult PutIdUrl(int id, AluguelDomain AluguelAtualizado)
+        {
+            AluguelDomain aluguelBuscado = _aluguelRepository.BuscarPorId(id);
+
+            if (aluguelBuscado == null)
+            {
+                return NotFound(
+                        new
+                        {
+                            mensagem = "Aluguel não encontrado!",
+                            erro = true
+                        }
+                    );
+            }
+
+            try
+            {
+                _aluguelRepository.AtualizarIdUrl(id, AluguelAtualizado);
+
+                return NoContent();
+            }
+            catch (Exception erro)
+            {
+                return BadRequest(erro);
+            }
+        }
+
+        [HttpDelete("excluir/{id}")]
+        public IActionResult Delete(int id)
+        {
+            _aluguelRepository.Deletar(id);
+
+            return NoContent();
         }
     }
 

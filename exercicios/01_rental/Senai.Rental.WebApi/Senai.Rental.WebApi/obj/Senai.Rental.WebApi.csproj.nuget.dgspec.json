@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User1\\Desktop\\senai_sprint2\\exercicios\\locadora\\web_api\\Senai.Rental.WebApi\\Senai.Rental.WebApi\\Senai.Rental.WebApi.csproj": {}
+    "C:\\Users\\User1\\Desktop\\senai_sprint2\\exercicios\\01_rental\\Senai.Rental.WebApi\\Senai.Rental.WebApi\\Senai.Rental.WebApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User1\\Desktop\\senai_sprint2\\exercicios\\locadora\\web_api\\Senai.Rental.WebApi\\Senai.Rental.WebApi\\Senai.Rental.WebApi.csproj": {
+    "C:\\Users\\User1\\Desktop\\senai_sprint2\\exercicios\\01_rental\\Senai.Rental.WebApi\\Senai.Rental.WebApi\\Senai.Rental.WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User1\\Desktop\\senai_sprint2\\exercicios\\locadora\\web_api\\Senai.Rental.WebApi\\Senai.Rental.WebApi\\Senai.Rental.WebApi.csproj",
+        "projectUniqueName": "C:\\Users\\User1\\Desktop\\senai_sprint2\\exercicios\\01_rental\\Senai.Rental.WebApi\\Senai.Rental.WebApi\\Senai.Rental.WebApi.csproj",
         "projectName": "Senai.Rental.WebApi",
-        "projectPath": "C:\\Users\\User1\\Desktop\\senai_sprint2\\exercicios\\locadora\\web_api\\Senai.Rental.WebApi\\Senai.Rental.WebApi\\Senai.Rental.WebApi.csproj",
+        "projectPath": "C:\\Users\\User1\\Desktop\\senai_sprint2\\exercicios\\01_rental\\Senai.Rental.WebApi\\Senai.Rental.WebApi\\Senai.Rental.WebApi.csproj",
         "packagesPath": "C:\\Users\\User1\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User1\\Desktop\\senai_sprint2\\exercicios\\locadora\\web_api\\Senai.Rental.WebApi\\Senai.Rental.WebApi\\obj\\",
+        "outputPath": "C:\\Users\\User1\\Desktop\\senai_sprint2\\exercicios\\01_rental\\Senai.Rental.WebApi\\Senai.Rental.WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User1\\AppData\\Roaming\\NuGet\\NuGet.Config",

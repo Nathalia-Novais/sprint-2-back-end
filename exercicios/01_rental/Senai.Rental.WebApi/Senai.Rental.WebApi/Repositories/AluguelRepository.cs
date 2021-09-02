@@ -16,12 +16,67 @@ namespace Senai.Rental.WebApi.Repositories
 
         public void AtualizarIdUrl(int idAluguel, AluguelDomain AluguelAtualizado)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryUpdateUrl = "UPDATE ALUGUEL SET dataAluguel= @dataAluguel , dataDevolucao= @dataDevolucao WHERE idAluguel= @idAluguel";
+
+                using (SqlCommand cmd = new SqlCommand(queryUpdateUrl, con))
+                {
+                    cmd.Parameters.AddWithValue("@dataAluguel", AluguelAtualizado.dataAluguel);
+                    cmd.Parameters.AddWithValue("@dataDevolucao", AluguelAtualizado.dataDevolucao);
+                    cmd.Parameters.AddWithValue("@idAluguel", idAluguel);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public AluguelDomain BuscarPorId(int idAluguel)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string querySelectById = "SELECT idAluguel,dataAluguel,dataDevolucao,nomeCliente,sobrenomeCliente,placaVeiculo FROM ALUGUEL LEFT JOIN VEICULO ON VEICULO.IdVeiculo = ALUGUEL.IdVeiculo LEFT JOIN CLIENTE ON CLIENTE.IdCliente = ALUGUEL.IdCliente WHERE idAluguel = @idAluguel";
+
+                con.Open();
+
+                SqlDataReader reader;
+
+                using (SqlCommand cmd = new SqlCommand(querySelectById, con))
+                {
+                    cmd.Parameters.AddWithValue("@idAluguel", idAluguel);
+
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                          AluguelDomain aluguelBuscado = new AluguelDomain
+                        {
+                              idAluguel = Convert.ToInt32(reader["idAluguel"]),
+
+                              dataAluguel = Convert.ToDateTime(reader["dataAluguel"]),
+
+                              dataDevolucao = Convert.ToDateTime(reader["dataDevolucao"]),
+
+                              cliente = new ClienteDomain
+                              {
+                                  nomeCliente = reader["nomeCliente"].ToString(),
+                                  sobrenomeCliente = reader["sobrenomeCliente"].ToString()
+                              },
+
+                              veiculo = new VeiculoDomain
+                              {
+                                  placaVeiculo = reader["placaVeiculo"].ToString()
+                              }
+                          };
+
+                        return aluguelBuscado;
+                    }
+
+                    return null;
+                }
+            }
         }
 
         public void Cadastrar(AluguelDomain novoAluguel)
@@ -46,7 +101,19 @@ namespace Senai.Rental.WebApi.Repositories
 
         public void Deletar(int idAluguel)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryDelete = "DELETE FROM ALUGUEL WHERE idAluguel = @idAluguel";
+
+                using (SqlCommand cmd = new SqlCommand(queryDelete, con))
+                {
+                    cmd.Parameters.AddWithValue("@idAluguel", idAluguel);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public List<AluguelDomain> ListarTodos()
@@ -55,7 +122,7 @@ namespace Senai.Rental.WebApi.Repositories
 
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelectAll = @"SELECT IdAluguel,ISNULL(ALUGUEL.idVeiculo,0),ISNULL(ALUGUEL.idCliente,0),dataAluguel , dataDevolucao, placaVeiculo,nomeCliente  FROM ALUGUEL
+                string querySelectAll = @"SELECT IdAluguel,ISNULL(ALUGUEL.idVeiculo,0),ISNULL(ALUGUEL.idCliente,0),dataAluguel , dataDevolucao, placaVeiculo,nomeCliente,sobrenomeCliente,cpfCliente  FROM ALUGUEL
                                           LEFT JOIN VEICULO ON VEICULO.IdVeiculo = ALUGUEL.IdVeiculo
                                           LEFT JOIN CLIENTE ON CLIENTE.IdCliente = ALUGUEL.IdCliente";
 
@@ -86,13 +153,16 @@ namespace Senai.Rental.WebApi.Repositories
                             {
                                 idVeiculo = Convert.ToInt32(rdr[1]),
                                 placaVeiculo = rdr[5].ToString()
+ 
                             },
 
                              cliente = new ClienteDomain()
                             {
                                 idCliente = Convert.ToInt32(rdr[2]),
-                                nomeCliente = rdr[6].ToString()
-                            }
+                                nomeCliente = rdr[6].ToString(),
+                                sobrenomeCliente = rdr[7].ToString(),
+                                cpfCliente = rdr[8].ToString()
+                             }
                         };
 
                         listaAlugueis.Add(aluguel);

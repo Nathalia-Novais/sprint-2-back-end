@@ -33,6 +33,19 @@ namespace Senai.Rental.WebApi.Controllers
 
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            ClienteDomain clienteBuscado = _clienteRepository.BuscarPorId(id);
+
+            if (clienteBuscado == null)
+            {
+                return NotFound("Nenhum Cliente encontrado");
+            }
+
+            return Ok(clienteBuscado);
+        }
+
         [HttpPost]
         public IActionResult Post(ClienteDomain novoCliente)
         {
@@ -40,6 +53,43 @@ namespace Senai.Rental.WebApi.Controllers
             _clienteRepository.Cadastrar(novoCliente);
 
             return StatusCode(201);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult PutIdUrl(int id, ClienteDomain clienteAtualizado)
+        {
+            ClienteDomain clienteBuscado = _clienteRepository.BuscarPorId(id);
+
+            if (clienteBuscado == null)
+            {
+                return NotFound(
+                        new
+                        {
+                            mensagem = "Cliente não encontrado!",
+                            erro = true
+                        }
+                    );
+            }
+
+            try
+            {
+                _clienteRepository.AtualizarIdUrl(id, clienteAtualizado);
+
+                return NoContent();
+            }
+            catch (Exception erro)
+            {
+                return BadRequest(erro);
+            }
+        }
+
+
+        [HttpDelete("excluir/{id}")]
+        public IActionResult Delete(int id)
+        {
+            _clienteRepository.Deletar(id);
+
+            return NoContent();
         }
     }
 }

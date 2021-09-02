@@ -16,12 +16,57 @@ namespace Senai.Rental.WebApi.Repositories
 
         public void AtualizarIdUrl(int idCliente, ClienteDomain ClienteAtualizado)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryUpdateUrl = "UPDATE CLIENTE SET nomeCliente = @nomeCliente WHERE idCliente= @idCliente";
+
+                using (SqlCommand cmd = new SqlCommand(queryUpdateUrl, con))
+                {
+                    cmd.Parameters.AddWithValue("@nomeCliente", ClienteAtualizado.nomeCliente);
+                    cmd.Parameters.AddWithValue("@idCliente", idCliente);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public ClienteDomain BuscarPorId(int idCliente)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string querySelectById = "SELECT nomeCliente, sobrenomeCliente,cpfCliente,idCliente FROM CLIENTE WHERE idCliente = @idCliente";
+
+                con.Open();
+
+                SqlDataReader reader;
+
+                using (SqlCommand cmd = new SqlCommand(querySelectById, con))
+                {
+                    cmd.Parameters.AddWithValue("@idCliente", idCliente);
+
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        ClienteDomain clienteBuscado = new ClienteDomain
+                        {
+                            idCliente = Convert.ToInt32(reader["idCliente"]),
+
+                            nomeCliente = reader["nomeCliente"].ToString(),
+
+                            sobrenomeCliente = reader["sobrenomeCliente"].ToString(),
+
+                            cpfCliente = reader["cpfCliente"].ToString()
+                        };
+
+                        return clienteBuscado;
+                    }
+
+                    return null;
+                }
+            }
         }
 
         public void Cadastrar(ClienteDomain novoCliente)
@@ -45,9 +90,21 @@ namespace Senai.Rental.WebApi.Repositories
 
         public void Deletar(int idCliente)
         {
-            throw new NotImplementedException();
-        }
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryDelete = "DELETE FROM CLIENTE WHERE idCliente = @idCliente";
 
+                using (SqlCommand cmd = new SqlCommand(queryDelete, con))
+                {
+                    cmd.Parameters.AddWithValue("@idCliente", idCliente);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+        }
         public List<ClienteDomain> ListarTodos()
         {
             List<ClienteDomain> listaClientes = new List<ClienteDomain>();

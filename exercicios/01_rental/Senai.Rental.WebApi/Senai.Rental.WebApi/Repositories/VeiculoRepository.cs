@@ -15,12 +15,67 @@ namespace Senai.Rental.WebApi.Repositories
        //private string stringConexao = "Data Source=; initial catalog=catalogo_tarde; integrated security=true";
         public void AtualizarIdUrl(int idVeiculo, VeiculoDomain VeiculoAtualizado)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryUpdateUrl = "UPDATE VEICULO SET placaVeiculo = @placaVeiculo WHERE idVeiculo= @idVeiculo";
+
+                using (SqlCommand cmd = new SqlCommand(queryUpdateUrl, con))
+                {
+                    cmd.Parameters.AddWithValue("@placaVeiculo", VeiculoAtualizado.placaVeiculo);
+                    cmd.Parameters.AddWithValue("@idVeiculo", idVeiculo);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            };
         }
 
         public VeiculoDomain BuscarPorId(int idVeiculo)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string querySelectById = "SELECT placaVeiculo,idVeiculo,nomeEmpresa,nomeModelo FROM VEICULO INNER JOIN EMPRESA ON EMPRESA.idEmpresa = VEICULO.idEmpresa INNER JOIN MODELO ON  MODELO.idModelo = VEICULO.idModelo WHERE idVeiculo = @idVeiculo";
+
+                con.Open();
+
+                SqlDataReader reader;
+
+                using (SqlCommand cmd = new SqlCommand(querySelectById, con))
+                {
+                    cmd.Parameters.AddWithValue("@idVeiculo", idVeiculo);
+
+                    reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        VeiculoDomain veiculoBuscado = new VeiculoDomain
+                        {
+                            idVeiculo = Convert.ToInt32(reader["idVeiculo"]),
+
+                            placaVeiculo = reader["placaVeiculo"].ToString(),
+
+                            empresa = new EmpresaDomain
+                            {
+                               nomeEmpresa = reader["nomeEmpresa"].ToString()
+                            },
+
+                            modelo = new ModeloDomain
+                            {
+                                nomeModelo = reader["nomeModelo"].ToString()
+                            }
+
+                           
+                        };
+
+                        return veiculoBuscado;
+                    }
+
+                    return null;
+                }
+
+            }
+
         }
 
         public void Cadastrar(VeiculoDomain novoVeiculo)
@@ -45,7 +100,19 @@ namespace Senai.Rental.WebApi.Repositories
 
         public void Deletar(int idVeiculo)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryDelete = "DELETE FROM VEICULO WHERE idVeiculo = @idVeiculo";
+
+                using (SqlCommand cmd = new SqlCommand(queryDelete, con))
+                {
+                    cmd.Parameters.AddWithValue("@idVeiculo", idVeiculo);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public List<VeiculoDomain> ListarTodos()

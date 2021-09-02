@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "91951615-e6ce-402b-973b-27ef757bd8f3",
+		"name": "Senai_Filme_webApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Genero",
+			"item": [
+				{
+					"name": "Genero.Cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeGenero\" : \"Ficção Cientifica\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/genero",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"genero"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Genero.ListarTodos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/genero",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"genero"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
